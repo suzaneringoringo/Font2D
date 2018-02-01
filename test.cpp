@@ -5,8 +5,8 @@ using namespace std;
 char gambar[32][32];
 
 int main() {
-   int x1 = 1;  int y1 = 1;
-   int x2 = 3;  int y2 = 5;
+   int x1 = 3;  int y1 = 5;
+   int x2 = 5;  int y2 = 1;
 
     if (x2 < x1) {
 		int temp = x1;
@@ -95,7 +95,7 @@ int main() {
                     int F = y2 - y1 + x1 - x2;
                     for (int y = y2; y <= y1; y++) {
                         gambar[y][x] = '*';
-                        if (F < 0) {
+                        if (F > 0) {
                             F += dx;
                         } else {
                             x--;
