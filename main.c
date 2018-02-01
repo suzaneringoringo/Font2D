@@ -76,11 +76,13 @@ int draw_line(int x1, int y1, int x2, int y2, color* c) {
    
 	int grad = (y2-y1)*(x2-x1);
 	int y = y1;
+	int x = x1;
+	int dx = x2 - x1;
 	int dy = y2 - y1;
 	if (grad > 0) {
 		int dxdy = y2 - y1 + x1 - x2;
 		int F = y2 - y1 + x1 - x2;
-		for (int x = x1; x <= x2; x++) {
+		for (x = x1; x <= x2; x++) {
 			draw_dot(x, y, c);
 			if (F < 0) {
 				F += dy;
@@ -91,16 +93,33 @@ int draw_line(int x1, int y1, int x2, int y2, color* c) {
 		}
    	} else {
         int dxdy = y2 - y1 + x1 - x2;
-        int F = y2 - y1 + x1 - x2;
-        for (int x = x1; x <= x2; x++) {
-            draw_dot(x, y, c);
-            if (F > 0) {
-                F += dy;
-            } else {
-                y--;
-                F += dxdy;
-            }
-        }
+		int dydx = x2 - x1 + y1 - y2;
+        int F;
+		if (dx >= (-1)*dy) {
+			F = y2 - y1 + x1 - x2;
+			for (x = x1; x <= x2; x++) {
+				draw_dot(x, y, c);
+				if (F > 0) {
+					F += dy;
+				} else {
+					y--;
+					F -= dxdy;
+				}
+			}
+		} else {
+			// draw_line(0,100,50,0,&white); dx positif, f = dx-dy
+			printf("X");
+			F = x2 - x1 + y1 - y2;
+			for (y = y1; y >= y2; y--) {
+				draw_dot(x, y, c);
+				if (F > 0) {
+					F -= dx;
+				} else {
+					x++;
+					F += dydx;
+				}
+			}
+		}
    	}
 }
 
@@ -263,10 +282,10 @@ int main() {
 
 	}
 */
-	clear_screen(1366, 300);
+	clear_screen(1366, 600);
 	point charpoints[20];
 	//get_char_points(charpoints, "A.txt", 100, 100);
-	draw_line(500,300,600,0,&white);
+	draw_line(0,100,80,0,&white);
 	
 	munmap(fbp, screensize);
 
