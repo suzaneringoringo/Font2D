@@ -105,6 +105,9 @@ int main() {
                 }
         }
    }
+
+
+   //COBA RUN
    for(int i = 0; i < 32; i++) {
        for(int j = 0; j < 32; j++) {
            cout << gambar[i][j] << " ";
