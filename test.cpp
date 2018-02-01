@@ -5,8 +5,8 @@ using namespace std;
 char gambar[32][32];
 
 int main() {
-   int x1 = 10;  int y1 = 10;
-   int x2 = 20;  int y2 = 30;
+   int x1 = 1;  int y1 = 20;
+   int x2 = 20;  int y2 = 15;
 
     if (x2 < x1) {
 		int temp = x1;
@@ -78,22 +78,24 @@ int main() {
         } else {
                 //gradien >= -1
                 if (grad >= -1) {
-                    y = y1;
-                    int dxdy = y2 - y1 + x1 - x2;
-                    int F = y2 - y1 + x1 - x2; 
-                    for (int x = x1; x <= x2; x++) {
-                        cout << x << " " << y << endl;
-                        gambar[y][x] = '*';
-                        if (F > 0) {
-                            F += dy;
-                        } else {
-                            y--;
-                            F += dxdy;
-                        }
-                    
+                    int dy = y2 - y1;
+                    if (dy < 0) {
+                        dy *= -1;
                     }
-                }
+                    int dx = x2 - x1;
+                    int F = 2*dy - dx;
+                    int y = y1;
 
+			        for (x = x1; x <= x2; x++) {
+                        cout << x << " " << y << endl;
+                        gambar[y][x] ='*';
+                        if (F > 0) {
+                            y--;
+                            F = F - 2*dx;
+                        } 
+                        F = F + 2*dy;
+			        }
+                }
                 //gradien < -1
                 else {
                     x = x2;
