@@ -6,7 +6,7 @@ char gambar[32][32];
 
 int main() {
    int x1 = 1;  int y1 = 20;
-   int x2 = 15;  int y2 = 1;
+   int x2 = 15;  int y2 = 10;
 
     if (x2 < x1) {
 		int temp = x1;

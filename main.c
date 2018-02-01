@@ -140,33 +140,41 @@ if (x2 < x1) {
         } else {
                 //gradien >= -1
                 if (grad >= -1) {
-                    int dxdy = y2 - y1 + x1 - x2;
-                    int F = y2 - y1 + x1 - x2; 
-                    for (int x = x1; x <= x2; x++) {
+                    int dy = y2 - y1;
+                    if (dy < 0) {
+                        dy *= -1;
+                    }
+                    int dx = x2 - x1;
+                    int F = 2*dy - dx;
+                    int y = y1;
+
+			        for (x = x1; x <= x2; x++) {
                         draw_dot(x,y,c);
                         if (F > 0) {
-                            F += dy;
-                        } else {
                             y--;
-                            F += dxdy;
-                        }
-                    
-                    }
+                            F = F - 2*dx;
+                        } 
+                        F = F + 2*dy;
+			        }
                 }
-
                 //gradien < -1
                 else {
-                    int dxdy = y2 - y1 + x1 - x2;
-                    int F = y2 - y1 + x1 - x2;
-                    for (int y = y2; y <= y1; y++) {
+                    int dx = x1 - x2;
+                    if (dx < 0) {
+                        dx *= -1;
+                    }
+                    int dy = y1 - y2;
+                    int F = 2*dx - dy;
+                    int x = x2;
+
+			        for (y = y2; y <= y1; y++) {
                         draw_dot(x,y,c);
                         if (F > 0) {
-                            F += dx;
-                        } else {
                             x--;
-                            F += dxdy;
-                        }
-                    } 
+                            F = F - 2*dy;
+                        } 
+                        F = F + 2*dx;
+			        } 
                 }
         }
    }	
