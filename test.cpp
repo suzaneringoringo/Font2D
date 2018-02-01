@@ -5,8 +5,8 @@ using namespace std;
 char gambar[32][32];
 
 int main() {
-   int x1 = 3;  int y1 = 5;
-   int x2 = 5;  int y2 = 1;
+   int x1 = 10;  int y1 = 10;
+   int x2 = 20;  int y2 = 30;
 
     if (x2 < x1) {
 		int temp = x1;
@@ -43,7 +43,7 @@ int main() {
         //gradien > 0
         if (grad > 0) {
                 //gradien <= 1
-                if (grad <= 1) {                
+                if (grad <= 1) {       
                     int dxdy = y2 - y1 + x1 - x2;
                     int F = y2 - y1 + x1 - x2; 
                     for (int x = x1; x <= x2; x++) {
@@ -59,9 +59,12 @@ int main() {
 
                 //gradien > 1
                 else {
-                    int dxdy = y2 - y1 + x1 - x2;
-                    int F = y2 - y1 + x1 - x2;
+                    int x = x1;
+                    int dx = x2 -x1;
+                    int dxdy = x2 - x1 + y1 - y2;
+                    int F = x2 - x1 + y1 - y2;
                     for (int y = y1; y <= y2; y++) {
+                        cout << x << " " << y << endl;
                         gambar[y][x] = '*';
                         if (F < 0) {
                             F += dx;
@@ -75,9 +78,11 @@ int main() {
         } else {
                 //gradien >= -1
                 if (grad >= -1) {
+                    y = y1;
                     int dxdy = y2 - y1 + x1 - x2;
                     int F = y2 - y1 + x1 - x2; 
                     for (int x = x1; x <= x2; x++) {
+                        cout << x << " " << y << endl;
                         gambar[y][x] = '*';
                         if (F > 0) {
                             F += dy;
@@ -91,14 +96,17 @@ int main() {
 
                 //gradien < -1
                 else {
-                    int dxdy = y2 - y1 + x1 - x2;
-                    int F = y2 - y1 + x1 - x2;
+                    x = x2;
+                    int dxdy = (y2 - y1 + x1 - x2);
+                    int F = -(y2 - y1 + x1 - x2);
                     for (int y = y2; y <= y1; y++) {
+                        cout << x << " " << y << endl;
                         gambar[y][x] = '*';
                         if (F > 0) {
                             F += dx;
                         } else {
                             x--;
+                        
                             F += dxdy;
                         }
                     } 
