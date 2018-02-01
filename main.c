@@ -140,11 +140,19 @@ void get_char_points(point* charpoints, char* nama_file, int current_x, int curr
 			draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
 		} else {
 			if (charpoints[j+1].absis == 0) {
-				draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
-				//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat);
+				if (charpoints[j].absis < charpoints[0].absis) {
+					draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
+				} else {
+					draw_line(charpoints[0].absis, charpoints[0].ordinat, charpoints[j].absis, charpoints[j].ordinat, &white);
+				}
+				printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat);
 			} else {
-				draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat, &white);
-				//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat);
+				if (charpoints[j].absis < charpoints[j+1].absis) {
+					draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat, &white);
+				} else {
+					draw_line(charpoints[j+1].absis, charpoints[j+1].ordinat, charpoints[j].absis, charpoints[j].ordinat, &white);
+				}
+				printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat);
 			}
 		}
 		j++;
@@ -237,9 +245,22 @@ int main() {
 		point charpoints[20];
 
 		//baca map untuk pixel karakter
+		/*
 		if (pStr[i] == 'A') {
 			get_char_points(charpoints, "A.txt", current_x, current_y);
+		} else if (pStr[i] == 'B') {
+			get_char_points(charpoints, "B.txt", current_x, current_y);
 		}
+		*/
+		draw_line(101, 101, 140, 115, &white);
+		usleep(500000);
+		draw_line(101, 130, 140, 115, &white);
+		usleep(500000);
+		draw_line(101, 130, 140, 145, &white);
+		usleep(500000);
+		draw_line(101, 160, 140, 145, &white);
+		usleep(500000);
+		draw_line(101, 101, 101, 160, &white);
 
 	}
 
