@@ -5,8 +5,8 @@ using namespace std;
 char gambar[32][32];
 
 int main() {
-   int x1 = 1;  int y1 = 7;
-   int x2 = 8;  int y2 = 1;
+   int x1 = 1;  int y1 = 1;
+   int x2 = 3;  int y2 = 5;
 
     if (x2 < x1) {
 		int temp = x1;
@@ -26,14 +26,14 @@ int main() {
     //kasus vertikal 
     if (x1 == x2) {
         for (int y = min(y1, y2); y <= max(y1, y2); y++) {
-            gambar[y][x1] = "*";
+            gambar[y][x1] = '*';
         }
     }
 
     //kasus_horizontal 
     else if (y1 == y2) {
         for(int x = x1; x <= x2; x++) {
-            gambar[y][x] = "*";
+            gambar[y][x] = '*';
         }
     }
 
