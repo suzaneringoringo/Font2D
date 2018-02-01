@@ -34,8 +34,15 @@ color green = {
 	0,255,255,0
 };
 
-void draw_dot(int x, int y, color* c)
-{
+int min(int y1, int y2){
+	if (y1 < y2) {
+		return y1;
+	} else {
+		return y2;
+	}
+}
+
+void draw_dot(int x, int y, color* c) {
 	if((x<1) || (x>layarx) || (y<1) || (y>layary)){
 		return ;
 	}
@@ -58,39 +65,47 @@ void draw_dot(int x, int y, color* c)
 }
 
 int draw_line(int x1, int y1, int x2, int y2, color* c) {
-   int grad = (y2-y1)*(x2-x1);
-	 int y = y1;
-	 int dy = y2 - y1;
-   if (grad > 0) {
-    int dxdy = y2 - y1 + x1 - x2;
-    int F = y2 - y1 + x1 - x2;
-    for (int x = x1; x <= x2; x++) {
-      draw_dot(x, y, c);
-      if (F < 0) {
-        F += dy;
-      } else {
-        y++;
-        F += dxdy;
-      }
-    }
-  } else {
-    int dxdy = y2 - y1 + x1 - x2;
-    int F = y2 - y1 + x1 - x2;
-    for (int x = x1; x <= x2; x++) {
-      draw_dot(x, y, c);
-      if (F > 0) {
-        F += dy;
-      } else {
-        y--;
-        F += dxdy;
-      }
-    }
-  }
+	if (x2 < x1) {
+		int temp = x1;
+		x1 = x2;
+		x2 = temp;
+		temp = y1;
+		y1 = y2;
+		y2 = temp;
+	}
+   
+	int grad = (y2-y1)*(x2-x1);
+	int y = y1;
+	int dy = y2 - y1;
+	if (grad > 0) {
+		int dxdy = y2 - y1 + x1 - x2;
+		int F = y2 - y1 + x1 - x2;
+		for (int x = x1; x <= x2; x++) {
+			draw_dot(x, y, c);
+			if (F < 0) {
+				F += dy;
+			} else {
+				y++;
+				F += dxdy;
+			}
+		}
+   	} else {
+        int dxdy = y2 - y1 + x1 - x2;
+        int F = y2 - y1 + x1 - x2;
+        for (int x = x1; x <= x2; x++) {
+            draw_dot(x, y, c);
+            if (F > 0) {
+                F += dy;
+            } else {
+                y--;
+                F += dxdy;
+            }
+        }
+   	}
 }
 
 
-void clear_screen(int width, int height)
-{
+void clear_screen(int width, int height) {
     int x = 0;
     int y = 0;
 
@@ -124,6 +139,7 @@ void get_char_points(point* charpoints, char* nama_file, int current_x, int curr
 		fscanf(charmap, "%d", &y);
 		charpoints[i].absis = x + current_x;
 		charpoints[i].ordinat = y + current_y;
+		
 		i++;
 	}
 
@@ -133,6 +149,7 @@ void get_char_points(point* charpoints, char* nama_file, int current_x, int curr
 	  255,
 	  0
 	};
+
 
 	int j = 0;
 	while (charpoints[j].absis != 0) {
@@ -155,7 +172,10 @@ void get_char_points(point* charpoints, char* nama_file, int current_x, int curr
 				printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat);
 			}
 		}
+		char c;
 		j++;
+		//scanf("%c",&c);
+		//printf("%d %d\n", charpoints[j].absis, charpoints[j].ordinat);
 		usleep(500000);
 	}
 
@@ -206,7 +226,7 @@ int main() {
 	printf("The framebuffer device was mapped to memory successfully.\n");
 
 	// menerima string untuk ditulis ulang
-	unsigned int len_max = 128;
+	/* unsigned int len_max = 128;
   	unsigned int current_size = 0;   
   	char *pStr = malloc(len_max);
   	current_size = len_max;
@@ -263,7 +283,12 @@ int main() {
 		draw_line(101, 101, 101, 160, &white);
 
 	}
-
+*/
+	clear_screen(1366, 300);
+	point charpoints[20];
+	//get_char_points(charpoints, "A.txt", 100, 100);
+	draw_line(500,300,600,0,&white);
+	
 	munmap(fbp, screensize);
 
 	close(fbfd);
