@@ -65,27 +65,27 @@ int draw_line(int x1, int y1, int x2, int y2, color* c) {
     int dxdy = y2 - y1 + x1 - x2;
     int F = y2 - y1 + x1 - x2;
     for (int x = x1; x <= x2; x++) {
-        draw_dot(x, y, c);
-        if (F < 0) {
-            F += dy;
-        } else {
-            y++;
-            F += dxdy;
-        }
+      draw_dot(x, y, c);
+      if (F < 0) {
+        F += dy;
+      } else {
+        y++;
+        F += dxdy;
+      }
     }
-   } else {
-        int dxdy = y2 - y1 + x1 - x2;
-        int F = y2 - y1 + x1 - x2;
-        for (int x = x1; x <= x2; x++) {
-            draw_dot(x, y, c);
-            if (F > 0) {
-                F += dy;
-            } else {
-                y--;
-                F += dxdy;
-            }
-        }
-   }
+  } else {
+    int dxdy = y2 - y1 + x1 - x2;
+    int F = y2 - y1 + x1 - x2;
+    for (int x = x1; x <= x2; x++) {
+      draw_dot(x, y, c);
+      if (F > 0) {
+        F += dy;
+      } else {
+        y--;
+        F += dxdy;
+      }
+    }
+  }
 }
 
 
@@ -141,11 +141,14 @@ void get_char_points(point* charpoints, char* nama_file, int current_x, int curr
 		} else {
 			if (charpoints[j+1].absis == 0) {
 				draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
+				//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat);
 			} else {
 				draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat, &white);
+				//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat);
 			}
-		}		
+		}
 		j++;
+		usleep(500000);
 	}
 
 	fclose;
