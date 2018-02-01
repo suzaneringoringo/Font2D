@@ -157,19 +157,11 @@ void get_char_points(point* charpoints, char* nama_file, int current_x, int curr
 			draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
 		} else {
 			if (charpoints[j+1].absis == 0) {
-				if (charpoints[j].absis < charpoints[0].absis) {
-					draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
-				} else {
-					draw_line(charpoints[0].absis, charpoints[0].ordinat, charpoints[j].absis, charpoints[j].ordinat, &white);
-				}
-				printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat);
+				draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
+				//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat);
 			} else {
-				if (charpoints[j].absis < charpoints[j+1].absis) {
-					draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat, &white);
-				} else {
-					draw_line(charpoints[j+1].absis, charpoints[j+1].ordinat, charpoints[j].absis, charpoints[j].ordinat, &white);
-				}
-				printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat);
+				draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat, &white);
+				//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat);
 			}
 		}
 		char c;
@@ -230,9 +222,7 @@ int main() {
   	unsigned int current_size = 0;   
   	char *pStr = malloc(len_max);
   	current_size = len_max;
-
 	printf("\nEnter a very very very long String value:");
-
 	int length = 0;
   	if(pStr != NULL) {
 		int c = EOF;
@@ -252,9 +242,7 @@ int main() {
 		pStr[i] = '\0';
 		printf("\nLong String value: %s \n\n",pStr);
   }
-
   clear_screen(vinfo.xres, vinfo.yres);
-
 	// Figure out where in memory to put the pixel
 	int first_y = 100; //y awal;
 	int first_x = 100;
@@ -263,30 +251,16 @@ int main() {
 	for (int i = 0; i < length; i++) {
 		
 		point charpoints[20];
-
 		//baca map untuk pixel karakter
-		/*
 		if (pStr[i] == 'A') {
 			get_char_points(charpoints, "A.txt", current_x, current_y);
-		} else if (pStr[i] == 'B') {
-			get_char_points(charpoints, "B.txt", current_x, current_y);
 		}
-		*/
-		draw_line(101, 101, 140, 115, &white);
-		usleep(500000);
-		draw_line(101, 130, 140, 115, &white);
-		usleep(500000);
-		draw_line(101, 130, 140, 145, &white);
-		usleep(500000);
-		draw_line(101, 160, 140, 145, &white);
-		usleep(500000);
-		draw_line(101, 101, 101, 160, &white);
-
 	}
 */
 	clear_screen(1366, 300);
 	point charpoints[20];
-	//get_char_points(charpoints, "A.txt", 100, 100);
+	get_char_points(charpoints, "C.txt", 100, 100);
+	get_char_points(charpoints, "D.txt", 200, 100);
 	draw_line(500,300,600,0,&white);
 	
 	munmap(fbp, screensize);
