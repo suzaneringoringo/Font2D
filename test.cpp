@@ -6,7 +6,7 @@ char gambar[32][32];
 
 int main() {
    int x1 = 1;  int y1 = 20;
-   int x2 = 20;  int y2 = 15;
+   int x2 = 15;  int y2 = 1;
 
     if (x2 < x1) {
 		int temp = x1;
@@ -98,20 +98,23 @@ int main() {
                 }
                 //gradien < -1
                 else {
-                    x = x2;
-                    int dxdy = (y2 - y1 + x1 - x2);
-                    int F = -(y2 - y1 + x1 - x2);
-                    for (int y = y2; y <= y1; y++) {
+                    int dx = x1 - x2;
+                    if (dx < 0) {
+                        dx *= -1;
+                    }
+                    int dy = y1 - y2;
+                    int F = 2*dx - dy;
+                    int x = x2;
+
+			        for (y = y2; y <= y1; y++) {
                         cout << x << " " << y << endl;
-                        gambar[y][x] = '*';
+                        gambar[y][x] ='*';
                         if (F > 0) {
-                            F += dx;
-                        } else {
                             x--;
-                        
-                            F += dxdy;
-                        }
-                    } 
+                            F = F - 2*dy;
+                        } 
+                        F = F + 2*dx;
+			        } 
                 }
         }
    }
