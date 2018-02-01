@@ -42,6 +42,14 @@ int min(int y1, int y2){
 	}
 }
 
+int max(int y1, int y2) {
+	if (y2 < y1) {
+		return y1;
+	} else {
+		return y2;
+	}
+}
+
 void draw_dot(int x, int y, color* c) {
 	if((x<1) || (x>layarx) || (y<1) || (y>layary)){
 		return ;
@@ -65,7 +73,7 @@ void draw_dot(int x, int y, color* c) {
 }
 
 int draw_line(int x1, int y1, int x2, int y2, color* c) {
-	if (x2 < x1) {
+if (x2 < x1) {
 		int temp = x1;
 		x1 = x2;
 		x2 = temp;
@@ -73,54 +81,95 @@ int draw_line(int x1, int y1, int x2, int y2, color* c) {
 		y1 = y2;
 		y2 = temp;
 	}
-   
-	int grad = (y2-y1)*(x2-x1);
-	int y = y1;
-	int x = x1;
-	int dx = x2 - x1;
-	int dy = y2 - y1;
-	if (grad > 0) {
-		int dxdy = y2 - y1 + x1 - x2;
-		int F = y2 - y1 + x1 - x2;
-		for (x = x1; x <= x2; x++) {
-			draw_dot(x, y, c);
-			if (F < 0) {
-				F += dy;
-			} else {
-				y++;
-				F += dxdy;
-			}
-		}
-   	} else {
-        int dxdy = y2 - y1 + x1 - x2;
-		int dydx = x2 - x1 + y1 - y2;
-        int F;
-		if (dx >= (-1)*dy) {
-			F = y2 - y1 + x1 - x2;
-			for (x = x1; x <= x2; x++) {
-				draw_dot(x, y, c);
-				if (F > 0) {
-					F += dy;
-				} else {
-					y--;
-					F -= dxdy;
-				}
-			}
-		} else {
-			// draw_line(0,100,50,0,&white); dx positif, f = dx-dy
-			printf("X");
-			F = x2 - x1 + y1 - y2;
-			for (y = y1; y >= y2; y--) {
-				draw_dot(x, y, c);
-				if (F > 0) {
-					F -= dx;
-				} else {
-					x++;
-					F += dydx;
-				}
-			}
-		}
-   	}
+
+   int y = y1;
+   int x = x1;
+   int dy = y2 - y1;
+   int dx = x2 - x1;
+
+
+    //kasus vertikal 
+    if (x1 == x2) {
+        for (int y = min(y1, y2); y <= max(y1, y2); y++) {
+            draw_dot(x,y,c);
+        }
+    }
+
+    //kasus_horizontal 
+    else if (y1 == y2) {
+        for(int x = x1; x <= x2; x++) {
+            draw_dot(x,y,c);
+        }
+    }
+
+    else {
+        float grad = (float)(y2-y1)/(float)(x2-x1);
+
+        //gradien > 0
+        if (grad > 0) {
+                //gradien <= 1
+                if (grad <= 1) {                
+                    int dxdy = y2 - y1 + x1 - x2;
+                    int F = y2 - y1 + x1 - x2; 
+                    for (int x = x1; x <= x2; x++) {
+                        draw_dot(x,y,c);
+                        if (F < 0) {
+                            F += dy;
+                        } else {
+                            y++;
+                            F += dxdy;
+                        }
+                    }
+                }
+
+                //gradien > 1
+                else {
+                    int dxdy = y2 - y1 + x1 - x2;
+                    int F = y2 - y1 + x1 - x2;
+                    for (int y = y1; y <= y2; y++) {
+                        draw_dot(x,y,c);
+                        if (F < 0) {
+                            F += dx;
+                        } else {
+                            x++;
+                            F += dxdy;
+                        }
+                    }
+                }
+    
+        } else {
+                //gradien >= -1
+                if (grad >= -1) {
+                    int dxdy = y2 - y1 + x1 - x2;
+                    int F = y2 - y1 + x1 - x2; 
+                    for (int x = x1; x <= x2; x++) {
+                        draw_dot(x,y,c);
+                        if (F > 0) {
+                            F += dy;
+                        } else {
+                            y--;
+                            F += dxdy;
+                        }
+                    
+                    }
+                }
+
+                //gradien < -1
+                else {
+                    int dxdy = y2 - y1 + x1 - x2;
+                    int F = y2 - y1 + x1 - x2;
+                    for (int y = y2; y <= y1; y++) {
+                        draw_dot(x,y,c);
+                        if (F > 0) {
+                            F += dx;
+                        } else {
+                            x--;
+                            F += dxdy;
+                        }
+                    } 
+                }
+        }
+   }	
 }
 
 
@@ -278,9 +327,9 @@ int main() {
 */
 	clear_screen(1366, 600);
 	point charpoints[20];
-	get_char_points(charpoints, "C.txt", 100, 100);
-	get_char_points(charpoints, "D.txt", 200, 100);
-	draw_line(500,300,600,0,&white);
+	//get_char_points(charpoints, "C.txt", 100, 100);
+	//get_char_points(charpoints, "D.txt", 200, 100);
+	draw_line(0,0,100,200,&white);
 	
 	munmap(fbp, screensize);
 
