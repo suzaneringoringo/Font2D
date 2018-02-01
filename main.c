@@ -124,8 +124,10 @@ if (x2 < x1) {
 
                 //gradien > 1
                 else {
-                    int dxdy = y2 - y1 + x1 - x2;
-                    int F = y2 - y1 + x1 - x2;
+                    int x = x1;
+                    int dx = x2 -x1;
+                    int dxdy = x2 - x1 + y1 - y2;
+                    int F = x2 - x1 + y1 - y2;
                     for (int y = y1; y <= y2; y++) {
                         draw_dot(x,y,c);
                         if (F < 0) {
