@@ -241,9 +241,7 @@ int main() {
   	unsigned int current_size = 0;   
   	char *pStr = malloc(len_max);
   	current_size = len_max;
-
 	printf("\nEnter a very very very long String value:");
-
 	int length = 0;
   	if(pStr != NULL) {
 		int c = EOF;
@@ -263,9 +261,7 @@ int main() {
 		pStr[i] = '\0';
 		printf("\nLong String value: %s \n\n",pStr);
   }
-
   clear_screen(vinfo.xres, vinfo.yres);
-
 	// Figure out where in memory to put the pixel
 	int first_y = 100; //y awal;
 	int first_x = 100;
@@ -274,18 +270,17 @@ int main() {
 	for (int i = 0; i < length; i++) {
 		
 		point charpoints[20];
-
 		//baca map untuk pixel karakter
 		if (pStr[i] == 'A') {
 			get_char_points(charpoints, "A.txt", current_x, current_y);
 		}
-
 	}
 */
 	clear_screen(1366, 600);
 	point charpoints[20];
-	//get_char_points(charpoints, "A.txt", 100, 100);
-	draw_line(0,100,80,0,&white);
+	get_char_points(charpoints, "C.txt", 100, 100);
+	get_char_points(charpoints, "D.txt", 200, 100);
+	draw_line(500,300,600,0,&white);
 	
 	munmap(fbp, screensize);
 
