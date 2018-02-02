@@ -73,7 +73,7 @@ void draw_dot(int x, int y, color* c) {
 }
 
 int draw_line(int x1, int y1, int x2, int y2, color* c) {
-if (x2 < x1) {
+	if (x2 < x1) {
 		int temp = x1;
 		x1 = x2;
 		x2 = temp;
@@ -138,7 +138,7 @@ if (x2 < x1) {
                         }
                     }
                 }
-    
+		//gradien < 0
         } else {
                 //gradien >= -1
                 if (grad >= -1) {
