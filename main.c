@@ -102,6 +102,7 @@ int draw_line(int x1, int y1, int x2, int y2, color* c) {
         }
     }
 
+	//kasus miring
     else {
         float grad = (float)(y2-y1)/(float)(x2-x1);
 
