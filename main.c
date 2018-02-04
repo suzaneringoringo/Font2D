@@ -251,12 +251,6 @@ void draw(point* charpoints, char* nama_file, int current_x, int current_y) {
 			charpoints[k].ordinat = y + current_y;
 			//printf("%d %d\n", charpoints[k].absis, charpoints[k].ordinat);
 		}
-		color white = {
-		  255,
-		  255,
-		  255,
-		  0
-		};
 		int j = 0;
 		while (charpoints[j].absis != 0) {
 			if (j==jumlah_maksimal_titik) {
@@ -336,10 +330,11 @@ void draw_kata(int* x, int* y, char* kata, int len){
 	while(i < len){
 		curr = kata[i];
 		if(curr == '\0') break;
-		draw_huruf(xx, yy, curr);
+		if (curr != ' ') {
+			draw_huruf(xx, yy, curr);
+		}		
 		xx += icrx;
 		i++;
-		
 		if(i==spacepos){
 			yy += icry;
 			*y += icry;
@@ -402,7 +397,7 @@ int main() {
 		clear_screen(1366, 700);
 		draw_kata(&x, &y,input,strlen(input));
 	}
-	//draw_huruf(0,0,'a');
+
 	munmap(fbp, screensize);
 
 	close(fbfd);
