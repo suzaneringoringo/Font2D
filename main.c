@@ -18,6 +18,7 @@ typedef struct{
 // INISIALISASI VARIABEL
 int layarx = 1366;
 int layary = 700;
+int jumlah_maksimal_titik = 20;
 
 struct fb_var_screeninfo vinfo;
 struct fb_fix_screeninfo finfo;
@@ -202,55 +203,64 @@ void clear_screen(int width, int height) {
     }
 }
 
-void get_char_points(point* charpoints, char* nama_file, int current_x, int current_y) {
+void draw(point* charpoints, char* nama_file, int current_x, int current_y) {
 	FILE* charmap;
-	int i = 0;
-	for (int j = 0; j < 20; j++) {
-		charpoints[j].absis = 0;
-		charpoints[j].ordinat = 0;
-	}
+
+	
 
 	charmap = fopen(nama_file, "r");
 	while (!feof (charmap)) {
-		int x,y;
-		fscanf(charmap, "%d", &x);
-		fscanf(charmap, " ");
-		fscanf(charmap, "%d", &y);
-		charpoints[i].absis = x + current_x;
-		charpoints[i].ordinat = y + current_y;
+		int i = 0;
+	
+		for (int j = 0; j < jumlah_maksimal_titik; j++) {
+			charpoints[j].absis = 0;
+			charpoints[j].ordinat = 0;
+		}
+
+		int jumlah_loop;
+		int current_loop = 0;
+		fscanf(charmap, "%d", &jumlah_loop);
 		
-		i++;
-	}
-
-	color white = {
-	  255,
-	  255,
-	  255,
-	  0
-	};
-
-
-	int j = 0;
-	while (charpoints[j].absis != 0) {
-		if (j==20) {
-			draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
-		} else {
-			if (charpoints[j+1].absis == 0) {
-				draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
-				//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat);
-			} else {
-				draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat, &white);
-				//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat);
+		while (current_loop < jumlah_loop) {
+			int jumlah_titik;
+			fscanf(charmap, "%d", &jumlah_titik);
+			for (int i = 0; i < jumlah_titik; i++) {
+				int x,y;
+				fscanf(charmap, "%d", &x);
+				fscanf(charmap, " ");
+				fscanf(charmap, "%d", &y);
+				charpoints[i].absis = x + current_x;
+				charpoints[i].ordinat = y + current_y;
+				i++;
+			}
+			color white = {
+			  255,
+			  255,
+			  255,
+			  0
+			};
+			int j = 0;
+			while (charpoints[j].absis != 0) {
+				if (j==jumlah_maksimal_titik) {
+					draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
+				} else {
+					if (charpoints[j+1].absis == 0) {
+						draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
+						//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat);
+					} else {
+						draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat, &white);
+						//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat);
+					}
+				}
+				j++;
 			}
 		}
-		char c;
-		j++;
+	}
+	fclose;
+		//char c;
 		//scanf("%c",&c);
 		//printf("%d %d\n", charpoints[j].absis, charpoints[j].ordinat);
-		usleep(500000);
-	}
-
-	fclose;
+	usleep(500000);
 }
 
 
@@ -358,7 +368,7 @@ int main() {
 	int current_x = first_x; //x untuk karakter sementara
 	for (int i = 0; i < length; i++) {
 		
-		point charpoints[20];
+		point charpoints[jumlah_maksimal_titik];
 		//baca map untuk pixel karakter
 		if (pStr[i] == 'A') {
 			get_char_points(charpoints, "A.txt", current_x, current_y);
@@ -366,7 +376,6 @@ int main() {
 	}
 */
 	clear_screen(1366, 600);
-	point charpoints[20];
 	//get_char_points(charpoints, "C.txt", 100, 100);
 	//get_char_points(charpoints, "D.txt", 200, 100);
 	draw_line(0,0,100,200,&white);
