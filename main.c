@@ -18,6 +18,7 @@ typedef struct{
 // INISIALISASI VARIABEL
 int layarx = 1366;
 int layary = 700;
+int jumlah_maksimal_titik = 20;
 
 struct fb_var_screeninfo vinfo;
 struct fb_fix_screeninfo finfo;
@@ -73,7 +74,7 @@ void draw_dot(int x, int y, color* c) {
 }
 
 int draw_line(int x1, int y1, int x2, int y2, color* c) {
-if (x2 < x1) {
+	if (x2 < x1) {
 		int temp = x1;
 		x1 = x2;
 		x2 = temp;
@@ -102,6 +103,7 @@ if (x2 < x1) {
         }
     }
 
+	//kasus miring
     else {
         float grad = (float)(y2-y1)/(float)(x2-x1);
 
@@ -139,7 +141,7 @@ if (x2 < x1) {
                         }
                     }
                 }
-    
+		//gradien < 0
         } else {
                 //gradien >= -1
                 if (grad >= -1) {
@@ -202,56 +204,89 @@ void clear_screen(int width, int height) {
     }
 }
 
-void get_char_points(point* charpoints, char* nama_file, int current_x, int current_y) {
-	FILE* charmap;
-	int i = 0;
-	for (int j = 0; j < 20; j++) {
-		charpoints[j].absis = 0;
-		charpoints[j].ordinat = 0;
+//I.S. Bentuk Polygon sudah ada
+//F.S. Polygon telah diwarnai
+//x dan y adalah titik didalam polygon
+void fill(int x,int y){
+
+	if((x<1)||(y<1)||(x>1366)||(y>700)){
+		return;
 	}
+	
+	long int position = (x + vinfo.xoffset) * (vinfo.bits_per_pixel / 8) + (y + vinfo.yoffset) * finfo.line_length;
+
+	//Kalau White
+	if((*(fbp + position) == white.r)){
+		return;
+	}
+	
+	else{
+		draw_dot(x,y,&white);
+		fill(x,y+1);
+		fill(x,y-1);
+		fill(x+1,y);
+		fill(x-1,y);
+	}
+}
+
+void draw(point* charpoints, char* nama_file, int current_x, int current_y) {
+	FILE* charmap;
 
 	charmap = fopen(nama_file, "r");
-	while (!feof (charmap)) {
-		int x,y;
-		fscanf(charmap, "%d", &x);
-		fscanf(charmap, " ");
-		fscanf(charmap, "%d", &y);
-		charpoints[i].absis = x + current_x;
-		charpoints[i].ordinat = y + current_y;
+
+	int jumlah_loop;
+	fscanf(charmap, "%d", &jumlah_loop);
+	//printf("Jumlah loop = %d\n", jumlah_loop);
+
+
+	for (int current_loop = 0; current_loop < jumlah_loop; current_loop++) {
 		
-		i++;
-	}
+		int i = 0;
 
-	color white = {
-	  255,
-	  255,
-	  255,
-	  0
-	};
-
-
-	int j = 0;
-	while (charpoints[j].absis != 0) {
-		if (j==20) {
-			draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
-		} else {
-			if (charpoints[j+1].absis == 0) {
-				draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
-				//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat);
-			} else {
-				draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat, &white);
-				//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat);
-			}
+		for (int j = 0; j < jumlah_maksimal_titik; j++) {
+			charpoints[j].absis = 0;
+			charpoints[j].ordinat = 0;
 		}
-		char c;
-		j++;
-		//scanf("%c",&c);
-		//printf("%d %d\n", charpoints[j].absis, charpoints[j].ordinat);
-		usleep(500000);
+		int jumlah_titik;
+		fscanf(charmap, "%d", &jumlah_titik);
+		//printf("Jumlah titik pada loop %d = %d\n", current_loop, jumlah_titik);
+		for (int k = 0; k < jumlah_titik; k++) {
+			int x,y;
+			fscanf(charmap, "%d  %d", &x, &y);
+			//printf("%d %d ", x, y);
+			charpoints[k].absis = x + current_x;
+			charpoints[k].ordinat = y + current_y;
+			//printf("%d %d\n", charpoints[k].absis, charpoints[k].ordinat);
+		}
+		color white = {
+		  255,
+		  255,
+		  255,
+		  0
+		};
+		int j = 0;
+		while (charpoints[j].absis != 0) {
+			if (j==jumlah_maksimal_titik) {
+				draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
+			} else {
+				if (charpoints[j+1].absis == 0) {
+					draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat, &white);
+					//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[0].absis, charpoints[0].ordinat);
+				} else {
+					draw_line(charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat, &white);
+					//printf("drawing from point %d %d to %d %d\n", charpoints[j].absis, charpoints[j].ordinat, charpoints[j+1].absis, charpoints[j+1].ordinat);
+				}
+			}
+			j++;
+		}
 	}
-
+	int x,y;
+	fscanf(charmap, "%d  %d", &x, &y);
+	printf("Mulai warna dari %d %d", x, y);
+	fill(x, y);
 	fclose;
 }
+
 
 int main() {
 	int fbfd = 0;
@@ -329,7 +364,7 @@ int main() {
 	int current_x = first_x; //x untuk karakter sementara
 	for (int i = 0; i < length; i++) {
 		
-		point charpoints[20];
+		point charpoints[jumlah_maksimal_titik];
 		//baca map untuk pixel karakter
 		if (pStr[i] == 'A') {
 			get_char_points(charpoints, "A.txt", current_x, current_y);
@@ -337,10 +372,12 @@ int main() {
 	}
 */
 	clear_screen(1366, 600);
-	point charpoints[20];
 	//get_char_points(charpoints, "C.txt", 100, 100);
 	//get_char_points(charpoints, "D.txt", 200, 100);
-	draw_line(0,0,50,200,&white);
+	draw_line(0,0,100,200,&white);
+
+	point* charpoints[jumlah_maksimal_titik];
+	draw(charpoints, "A.txt", 100, 100);
 	
 	munmap(fbp, screensize);
 
