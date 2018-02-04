@@ -214,9 +214,8 @@ void fill(int x,int y){
 	}
 	
 	long int position = (x + vinfo.xoffset) * (vinfo.bits_per_pixel / 8) + (y + vinfo.yoffset) * finfo.line_length;
-
 	//Kalau White
-	if((*(fbp + position) == white.r)){
+	if((*(fbp + position) == -1)){
 		return;
 	}
 	
@@ -282,8 +281,8 @@ void draw(point* charpoints, char* nama_file, int current_x, int current_y) {
 	}
 	int x,y;
 	fscanf(charmap, "%d  %d", &x, &y);
-	printf("Mulai warna dari %d %d", x, y);
-	fill(x, y);
+	printf("Mulai warna dari %d %d", x+current_x, y+current_y);
+	fill(x+current_x, y+current_y);
 	fclose;
 }
 
@@ -374,10 +373,10 @@ int main() {
 	clear_screen(1366, 600);
 	//get_char_points(charpoints, "C.txt", 100, 100);
 	//get_char_points(charpoints, "D.txt", 200, 100);
-	draw_line(0,0,100,200,&white);
+	//draw_line(0,0,100,200,&white);
 
 	point* charpoints[jumlah_maksimal_titik];
-	draw(charpoints, "A.txt", 100, 100);
+	draw(charpoints, "A.txt", 0, 0);
 	
 	munmap(fbp, screensize);
 
