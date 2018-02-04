@@ -220,10 +220,7 @@ void fill(int x,int y){
 	}
 	
 	else{
-		*(fbp + position) = 255;
-		*(fbp + position + 1) = 255;
-		*(fbp + position + 2) = 255;
-		*(fbp + position + 3) = 0;
+		draw_dot(x,y,&white);
 		fill(x,y+1);
 		fill(x,y-1);
 		fill(x+1,y);
