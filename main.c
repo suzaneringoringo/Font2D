@@ -206,8 +206,6 @@ void clear_screen(int width, int height) {
 void draw(point* charpoints, char* nama_file, int current_x, int current_y) {
 	FILE* charmap;
 
-	
-
 	charmap = fopen(nama_file, "r");
 	while (!feof (charmap)) {
 		int i = 0;
@@ -379,6 +377,9 @@ int main() {
 	//get_char_points(charpoints, "C.txt", 100, 100);
 	//get_char_points(charpoints, "D.txt", 200, 100);
 	draw_line(0,0,100,200,&white);
+
+	point* charpoints[jumlah_maksimal_titik];
+	draw(charpoints, "A.txt", 100, 100);
 	
 	munmap(fbp, screensize);
 
