@@ -253,6 +253,35 @@ void get_char_points(point* charpoints, char* nama_file, int current_x, int curr
 	fclose;
 }
 
+
+
+//I.S. Bentuk Polygon sudah ada
+//F.S. Polygon telah diwarnai
+//x dan y adalah titik didalam polygon
+void fill(int x,int y){
+
+	if((x<1)||(y<1)||(x>1366)||(y>700)){
+		return;
+	}
+	
+	long int position = (x + vinfo.xoffset) * (vinfo.bits_per_pixel / 8) + (y + vinfo.yoffset) * finfo.line_length;
+
+	//Kalau White
+	if((*(fbp + position) == white.r)){
+		return;
+	}
+	
+	else{
+		*(fbp + position) = 255;
+		*(fbp + position + 1) = 255;
+		*(fbp + position + 2) = 255;
+		*(fbp + position + 3) = 0;
+		fill(x,y+1);
+		fill(x,y-1);
+		fill(x+1,y);
+		fill(x-1,y);
+	}
+}
 int main() {
 	int fbfd = 0;
 
