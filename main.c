@@ -280,11 +280,87 @@ void draw(point* charpoints, char* nama_file, int current_x, int current_y) {
 		}
 	}
 	int x,y;
-	fscanf(charmap, "%d  %d", &x, &y);
-	printf("Mulai warna dari %d %d", x+current_x, y+current_y);
+	fscanf(charmap, "%d %d", &x, &y);
+	//printf("Mulai warna dari %d %d", x+current_x, y+current_y);
 	fill(x+current_x, y+current_y);
 	fclose;
 }
+
+int isValid(char* test,int len){
+	int i;
+	int count = 0;
+	for(i=0;i<len;i++){
+		if(test[i] == ' '){
+			count = 0;
+		}
+		else{
+			count++;
+		}
+		
+		if(count>30){
+			return 0;
+		}
+	}
+	return 1;
+}
+
+int findSpace(char* test,int len, int start){
+	int x = start + 29;
+	if (x >= len){
+		return len;
+	}
+	else{
+		while(test[x] != ' '){
+			x--;
+		}
+		return x;
+	}
+}
+
+void draw_huruf(int x, int y, char c){
+  // koreksi huruf kecil -> -32
+  char c2;
+  if (c > 90){
+    c2 = c - 32;
+  } else {
+    c2 = c;
+  }
+  point charpoints[jumlah_maksimal_titik];
+  char inpfile[] = {"A.txt"};
+	//draw(charpoints, "F.txt", 0, 0);
+	inpfile[0] = c2;
+	printf("%s",inpfile);
+	draw(charpoints, inpfile, x, y);
+}
+
+void draw_kata(int* x, int* y, char* kata, int len){
+	int xx = *x;
+	int yy = *y;
+	int icrx = 60;
+	int icry = 60;
+	char curr = ' ';
+	int i = 0;
+    int spacepos = findSpace(kata,len,0);
+	while(i < len){
+		curr = kata[i];
+		if(curr == '\0') break;
+		draw_huruf(xx, yy, curr);
+		xx += icrx;
+		i++;
+		
+		if(i==spacepos){
+			yy += icry;
+			*y += icry;
+			xx = *x;
+			if (spacepos != len){
+				i++;
+				spacepos = findSpace(kata,len,i);
+			}
+		}
+	}
+}
+
+
 
 
 int main() {
@@ -370,14 +446,26 @@ int main() {
 		}
 	}
 */
-	clear_screen(1366, 600);
+	
 	//get_char_points(charpoints, "C.txt", 100, 100);
 	//get_char_points(charpoints, "D.txt", 200, 100);
 	//draw_line(0,0,100,200,&white);
 
-	point* charpoints[jumlah_maksimal_titik];
-	draw(charpoints, "A.txt", 0, 0);
-	
+	point charpoints[jumlah_maksimal_titik];
+	//draw(charpoints, "F.txt", 0, 0);
+	//draw(charpoints, "A.txt", 100, 0);
+	//draw(charpoints, "H.txt", 200, 0);
+	//draw(charpoints, "I.txt", 300, 0);
+	char input[256];
+	scanf("%256[^\n]",&input);
+	int y0 = 50; // 50 pixel dari atas biar ga mepet screen
+	y = y0;
+	//refresh(0, 360, 0, 700);
+	if ((strlen(input) <= 256)&&(isValid(input,strlen(input)))){   
+		clear_screen(1366, 700);
+		draw_kata(&x, &y,input,strlen(input));
+	}
+	//draw_huruf(0,0,'a');
 	munmap(fbp, screensize);
 
 	close(fbfd);
