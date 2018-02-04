@@ -208,18 +208,11 @@ void clear_screen(int width, int height) {
 //F.S. Polygon telah diwarnai
 //x dan y adalah titik didalam polygon
 void fill(int x,int y){
-
-	if((x<1)||(y<1)||(x>1366)||(y>700)){
-		return;
-	}
 	
 	long int position = (x + vinfo.xoffset) * (vinfo.bits_per_pixel / 8) + (y + vinfo.yoffset) * finfo.line_length;
-	//Kalau White
-	if((*(fbp + position) == -1)){
+	if ((x<1)||(y<1)||(x>1366)||(y>700) || (*(fbp + position) == -1)) {
 		return;
-	}
-	
-	else{
+	} else {
 		draw_dot(x,y,&white);
 		fill(x,y+1);
 		fill(x,y-1);
@@ -305,7 +298,7 @@ int isValid(char* test,int len){
 }
 
 int findSpace(char* test,int len, int start){
-	int x = start + 29;
+	int x = start + 20;
 	if (x >= len){
 		return len;
 	}
@@ -317,27 +310,25 @@ int findSpace(char* test,int len, int start){
 	}
 }
 
+char inpfile[] = {"A.txt"};
 void draw_huruf(int x, int y, char c){
-  // koreksi huruf kecil -> -32
-  char c2;
-  if (c > 90){
-    c2 = c - 32;
-  } else {
-    c2 = c;
-  }
-  point charpoints[jumlah_maksimal_titik];
-  char inpfile[] = {"A.txt"};
-	//draw(charpoints, "F.txt", 0, 0);
+	// koreksi huruf kecil -> -32
+	char c2;
+	if (c > 90){
+		c2 = c - 32;
+	} else {
+		c2 = c;
+	}
+	point charpoints[jumlah_maksimal_titik];
 	inpfile[0] = c2;
-	printf("%s",inpfile);
 	draw(charpoints, inpfile, x, y);
 }
 
 void draw_kata(int* x, int* y, char* kata, int len){
 	int xx = *x;
 	int yy = *y;
-	int icrx = 60;
-	int icry = 60;
+	int icrx = 50;
+	int icry = 80;
 	char curr = ' ';
 	int i = 0;
     int spacepos = findSpace(kata,len,0);
@@ -359,9 +350,6 @@ void draw_kata(int* x, int* y, char* kata, int len){
 		}
 	}
 }
-
-
-
 
 int main() {
 	int fbfd = 0;
@@ -406,61 +394,9 @@ int main() {
 	}
 	printf("The framebuffer device was mapped to memory successfully.\n");
 
-	// menerima string untuk ditulis ulang
-	/* unsigned int len_max = 128;
-  	unsigned int current_size = 0;   
-  	char *pStr = malloc(len_max);
-  	current_size = len_max;
-	printf("\nEnter a very very very long String value:");
-	int length = 0;
-  	if(pStr != NULL) {
-		int c = EOF;
-		unsigned int i =0;
-    	
-    	//accept user input until hit enter or end of file
-		while (( c = getchar() ) != '\n') {
-			pStr[i++]=(char)c;
-			length++;
-			
-			//if i reached maximize size then realloc size
-			if(i == current_size) {
-				current_size = i+len_max;
-				pStr = realloc(pStr, current_size);
-			}
-		}
-		pStr[i] = '\0';
-		printf("\nLong String value: %s \n\n",pStr);
-  }
-  clear_screen(vinfo.xres, vinfo.yres);
-	// Figure out where in memory to put the pixel
-	int first_y = 100; //y awal;
-	int first_x = 100;
-	int current_y = first_y; //y untuk karakter sementara
-	int current_x = first_x; //x untuk karakter sementara
-	for (int i = 0; i < length; i++) {
-		
-		point charpoints[jumlah_maksimal_titik];
-		//baca map untuk pixel karakter
-		if (pStr[i] == 'A') {
-			get_char_points(charpoints, "A.txt", current_x, current_y);
-		}
-	}
-*/
-	
-	//get_char_points(charpoints, "C.txt", 100, 100);
-	//get_char_points(charpoints, "D.txt", 200, 100);
-	//draw_line(0,0,100,200,&white);
-
-	point charpoints[jumlah_maksimal_titik];
-	//draw(charpoints, "F.txt", 0, 0);
-	//draw(charpoints, "A.txt", 100, 0);
-	//draw(charpoints, "H.txt", 200, 0);
-	//draw(charpoints, "I.txt", 300, 0);
 	char input[256];
 	scanf("%256[^\n]",&input);
-	int y0 = 50; // 50 pixel dari atas biar ga mepet screen
-	y = y0;
-	//refresh(0, 360, 0, 700);
+	y = 50; // 50 pixel dari atas biar ga mepet screend
 	if ((strlen(input) <= 256)&&(isValid(input,strlen(input)))){   
 		clear_screen(1366, 700);
 		draw_kata(&x, &y,input,strlen(input));
