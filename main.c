@@ -209,6 +209,7 @@ void clear_screen(int width, int height) {
 void fill(int x,int y){
 
 	if((x<1)||(y<1)||(x>1366)||(y>700)){
+		printf("test0");
 		return;
 	}
 	
@@ -216,10 +217,12 @@ void fill(int x,int y){
 
 	//Kalau White
 	if((*(fbp + position) == white.r)){
+		printf("test1");
 		return;
 	}
-	
-	else{
+
+	else {
+		printf("test2");
 		*(fbp + position) = 255;
 		*(fbp + position + 1) = 255;
 		*(fbp + position + 2) = 255;
@@ -283,9 +286,10 @@ void draw(point* charpoints, char* nama_file, int current_x, int current_y) {
 		}
 	}
 	int x,y;
+	printf("test\n");
 	fscanf(charmap, "%d  %d", &x, &y);
-	printf("Mulai warna dari %d %d", x, y);
-	fill(x, y);
+	printf("Mulai warna dari %d %d\n", x, y);
+	fill(x + current_x, y + current_y);
 	fclose;
 }
 
